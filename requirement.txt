@@ -1,0 +1,6 @@
+seleniumwire
+selenium
+webdriver_manager
+concurrent
+bs4
+requests
