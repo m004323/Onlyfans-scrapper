@@ -1,6 +1,6 @@
-seleniumwire
+selenium-wire
 selenium
 webdriver_manager
-concurrent
+futures
 bs4
 requests
