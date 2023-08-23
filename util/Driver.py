@@ -17,7 +17,7 @@ class Driver:
 
     def __init__(self) -> None:
         
-        self.service = Service(ChromeDriverManager(driver_version='114.0.5735.90').install())
+        self.service = Service(ChromeDriverManager().install())
         self.options = webdriver.ChromeOptions()
         os.system("TASKKILL /IM chrome.exe /F")
         os.system("CLS")
