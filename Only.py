@@ -144,7 +144,7 @@ class Only:
         self.username = username
 
     # [ function ]
-    def make_login():
+    def make_login(self):
         driver = Driver()
         driver.create(False)
         driver.get_page(url="https://onlyfans.com/", sleep=999)
