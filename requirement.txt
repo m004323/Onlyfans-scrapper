@@ -1,6 +1,7 @@
-selenium-wire
 selenium
+selenium-wire
 webdriver_manager
-futures
 bs4
 requests
+concurrent
+rich
