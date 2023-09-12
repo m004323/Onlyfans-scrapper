@@ -134,6 +134,14 @@ def download_buttons(url, name, prefix_api = "social/buttons"):
 
     driver.close()
 
+# Main function download message from chat
+def download_chat(id_chat):
+    driver = Driver()
+    driver.create(headless=False)
+    driver.get_page(f"https://onlyfans.com/my/chats/chat/{id_chat}/", sleep=10)
+
+    driver.close()
+
 class Only:
 
     # Variable
@@ -151,29 +159,64 @@ class Only:
 
     def get_url(self):
         if(self.username != None and self.username != ""):
-            return  "https://onlyfans.com/" + self.username
+            return f"https://onlyfans.com/{self.username}"
 
     def get_all_post(self):
-        download(self.get_url(), self.username, "posts?", True)
+        download(
+            url = self.get_url(), 
+            name = self.username, 
+            prefix_api = "posts?", 
+            scroll_all_page = True
+        )
 
     def get_all_media(self):
-        download(self.get_url() + "/media", self.username, "medias?", True)
+        download(
+            url = self.get_url() + "/media", 
+            name = self.username, 
+            prefix_api = "medias?", 
+            scroll_all_page = True
+        )
 
     def get_last_post(self):
-        download(self.get_url(), self.username, "posts?", False)
+        download(
+            url = self.get_url(), 
+            name = self.username, 
+            prefix_api = "posts?", 
+            scroll_all_page = False
+        )
 
     def get_last_media(self):
-        download(self.get_url() + "/media", self.username, "medias?", False)
+        download(
+            url = self.get_url() + "/media", 
+            name = self.username, 
+            prefix_api = "medias?", 
+            scroll_all_page = False
+        )
 
     def get_stories(self):
-        donwload_stories(self.get_url(), self.username)
+        donwload_stories(
+            url = self.get_url(), 
+            name = self.username
+        )
 
     def get_archived(self):
-        download_archive(self.get_url() + "/archived", self.username)
+        download_archive(
+            url = self.get_url() + "/archived", 
+            name = self.username
+        )
 
     def get_streams(self):
-        download_streams(self.get_url() + "/streams", self.username)
+        download_streams(
+            url = self.get_url() + "/streams", 
+            name = self.username
+        )
 
     def get_buttons(self):
-        download_buttons(self.get_url() + "/streams", self.username)
+        download_buttons(
+            url = self.get_url() + "/button", 
+            name = self.username
+        )
+
+    def get_chat(self, id_chat):
+        download_chat(id_chat)
 
