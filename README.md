@@ -50,6 +50,9 @@ Clone the project
 
 ```
 
+## Tutorial
+https://www.youtube.com/watch?v=e6h13W3mVhA&t=48s
+
 ## Authors
 
 - [@Ghost6446](https://www.github.com/Ghost6446)
