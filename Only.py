@@ -7,6 +7,10 @@ from util.api import get_info_profile_scrape, scroll_to_end, dump_post, download
 # General import
 import time, json
 from seleniumwire.utils import decode
+from rich.console import Console
+
+# Variable
+console = Console()
 
 
 def download(url, name, prefix_api, scroll_all_page):
@@ -162,6 +166,7 @@ class Only:
             return f"https://onlyfans.com/{self.username}"
 
     def get_all_post(self):
+        console.log("=> GET ALL POST")
         download(
             url = self.get_url(), 
             name = self.username, 
@@ -170,6 +175,7 @@ class Only:
         )
 
     def get_all_media(self):
+        console.log("=> GET ALL MEDIA")
         download(
             url = self.get_url() + "/media", 
             name = self.username, 
@@ -178,6 +184,7 @@ class Only:
         )
 
     def get_last_post(self):
+        console.log("=> GET LAST POST")
         download(
             url = self.get_url(), 
             name = self.username, 
@@ -186,6 +193,7 @@ class Only:
         )
 
     def get_last_media(self):
+        console.log("=> GET LAST MEDIA")
         download(
             url = self.get_url() + "/media", 
             name = self.username, 
@@ -194,29 +202,35 @@ class Only:
         )
 
     def get_stories(self):
+        console.log("=> GET STORIES")
         donwload_stories(
             url = self.get_url(), 
             name = self.username
         )
 
     def get_archived(self):
+        console.log("=> GET ARCHIVIED")
         download_archive(
             url = self.get_url() + "/archived", 
             name = self.username
         )
 
     def get_streams(self):
+        console.log("=> GET STREAMS")
         download_streams(
             url = self.get_url() + "/streams", 
             name = self.username
         )
 
     def get_buttons(self):
+        console.log("=> GET BUTTON")
         download_buttons(
             url = self.get_url() + "/button", 
             name = self.username
         )
 
     def get_chat(self, id_chat):
-        download_chat(id_chat)
-
+        console.log("=> GET CHAT")
+        download_chat(
+            id_chat=id_chat
+        )
