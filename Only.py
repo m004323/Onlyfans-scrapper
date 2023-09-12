@@ -138,12 +138,27 @@ def download_buttons(url, name, prefix_api = "social/buttons"):
 
     driver.close()
 
-# Main function download message from chat
 def download_chat(id_chat):
     driver = Driver()
     driver.create(headless=False)
     driver.get_page(f"https://onlyfans.com/my/chats/chat/{id_chat}/", sleep=10)
 
+    console.log("SCROLL TO THE TOP !! ")
+    time.sleep(3)
+    console.log("IF TOP OF THE PAGE, PRESS ANY KEY")
+    msg = input("")
+
+    for req in driver.driver.requests:
+        if "v2/chats/" in str(req.url):
+            response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
+            json_data = json.loads(response_body)
+            if req.url == f"https://onlyfans.com/api2/v2/chats/{id_chat}?skip_users=all":
+                dump_media_chat(json_data['lastMessage']['media'])
+            else:
+                for msg in json_data['list']:
+                    dump_media_chat(msg['media'])
+
+    download_api_media(user="chat", folder_name=id_chat)
     driver.close()
 
 class Only:
