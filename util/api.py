@@ -1,8 +1,12 @@
-# 9.08.2023
+# 9.08.2023 -> 12.09-2023
 
 # Import
 import json, requests, time, os, sys, json
+from rich.console import Console
 from concurrent.futures import ThreadPoolExecutor
+
+# Variable
+console = Console()
 
 def get_info_profile_scrape(json_data):
     user_data = {
@@ -16,12 +20,13 @@ def get_info_profile_scrape(json_data):
         '*n_medias': json_data['mediasCount'],
         'join_data': str(json_data['joinDate']).split("T")[0]
     } 
-    print("Info page =>", user_data)
+    console.log(f"Info page => {user_data}")
 
-def scroll_to_end(driver, sleep_load = 0.6):
+def scroll_to_end(driver, sleep_load = 1):
     counter = 0
     last_height = driver.execute_script("return document.body.scrollHeight")
     while True:
+        console.log("[blue]SCROLL")
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight + 500);")
         counter+=1
         time.sleep(sleep_load)
@@ -33,58 +38,42 @@ def scroll_to_end(driver, sleep_load = 0.6):
         last_height = new_height
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight + 500);")
         time.sleep(sleep_load)
-    print("Reach end page")
+    console.log("[red]END REACH")
     return True
 
 arr_media = []
 def dump_post(radice):
-
     if(len(radice) != 0):
         for i in range(len(radice)):
             for j in range(len(radice[i]['media'])):
                 url = ""
-                
                 try: url = radice[i]['media'][j]['files']['source']['url']
                 except:
                     try: url = radice[i]['media'][j]['source']['source']
                     except: url = None
-                    
-                if(radice[i]['media'][j]['type'] == "photo"):
-                    arr_media.append({
-                        'id': radice[i]['media'][j]['id'],
-                        'url': url,
-                        'is_video': False,
-                    })
-
-                else:
-                    arr_media.append({
-                        'id': radice[i]['media'][j]['id'],
-                        'url': url,
-                        'is_video': True,
-                    })
+                if(radice[i]['media'][j]['type'] == "photo"): arr_media.append({'id': radice[i]['media'][j]['id'],'url': url,'is_video': False,})
+                else: arr_media.append({'id': radice[i]['media'][j]['id'],'url': url, 'is_video': True,})
 
     else:
-        print("ERROR [dump_post] ")
+        console.log("[red] ERROR [dump_post] ")
 
 def download_single_media(media, file_name):
     if(not os.path.isfile(file_name)):
-        print(f" - Download ({media['id']}) => [ {arr_media.index(media) + 1} / {len(arr_media)} ]")
-
+        console.log(f" - Download ({media['id']}) => [ {arr_media.index(media) + 1} / {len(arr_media)} ]")
         if(media['url'] != None and "http" in media['url']):
             r = requests.get(media['url'])
             if(r.status_code == 200):
                 open(file_name, "wb").write(r.content)
             else:
-                print(f"ERROR [{media['id']}] => {r.status_code}")
+                console.log(f"[red] ERROR [{media['id']}] => {r.status_code}")
         else:
-            print("Unlock content")
+            console.log("[green]Unlock content")
     else:
-        print("Skip")
+        console.log("[green]Skip")
 
 def download_api_media(user, folder_name):
-
     global arr_media
-    print("Medias find => ", len(arr_media))
+    console.log(f"Medias find => {len(arr_media)}")
     path_folder = "data/" + user + "/" + folder_name 
     os.makedirs(path_folder, exist_ok=True)
     with ThreadPoolExecutor(max_workers=10) as executor:
@@ -101,22 +90,11 @@ def download_api_media(user, folder_name):
 def dump_media_chat(radice):
     for media in radice:
         url = ""    
-        try: url = media['files']['source']['url'] # For api Stories
+        try: url = media['files']['source']['url']
         except:
-            try: url = media['source']['source'] # For api Post and media
-            except: url = None
-                    
-        if(media['type'] == "photo"):
-            arr_media.append({
-                'id': media['id'],
-                'url': url,
-                'is_video': False,
-            })
-        else:
-            arr_media.append({
-                'id': media['id'],
-                'url': url,
-                'is_video': True,
-            })
+            try: url = media['source']['source']
+            except: url = None   
+        if(media['type'] == "photo"): arr_media.append({'id': media['id'],'url': url,'is_video': False})
+        else: arr_media.append({'id': media['id'],'url': url,'is_video': True})
 
         
