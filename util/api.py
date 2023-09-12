@@ -97,4 +97,26 @@ def download_api_media(user, folder_name):
             executor.submit(download_single_media, media, file_name)
             time.sleep(0.1)
     arr_media = []
+
+def dump_media_chat(radice):
+    for media in radice:
+        url = ""    
+        try: url = media['files']['source']['url'] # For api Stories
+        except:
+            try: url = media['source']['source'] # For api Post and media
+            except: url = None
+                    
+        if(media['type'] == "photo"):
+            arr_media.append({
+                'id': media['id'],
+                'url': url,
+                'is_video': False,
+            })
+        else:
+            arr_media.append({
+                'id': media['id'],
+                'url': url,
+                'is_video': True,
+            })
+
         
