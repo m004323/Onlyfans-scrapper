@@ -1,8 +1,8 @@
-# 9.08.2023
+# 9.08.2023 -> 12.09.2023
 
 # Class import
 from util.Driver import Driver
-from util.api import get_info_profile_scrape, scroll_to_end, dump_post, download_api_media
+from util.api import get_info_profile_scrape, scroll_to_end, dump_post, download_api_media, dump_media_chat
 
 # General import
 import time, json
@@ -15,15 +15,19 @@ console = Console()
 
 def download(url, name, prefix_api, scroll_all_page):
 
+    console.log("[red]GET DRIVER")
     driver = Driver()
-    driver.create(False)
+    driver.create(headless = False)
     driver.get_page(url, sleep=10)
+
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
+            console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
             get_info_profile_scrape(json_data)
 
+    console.log("[green]SCROOL TO THE END")
     if(scroll_all_page):
         scroll_to_end(driver.driver)
     else:
@@ -32,22 +36,26 @@ def download(url, name, prefix_api, scroll_all_page):
             driver.driver.execute_script(f"window.scrollTo({pixel}, document.body.scrollHeight + 500)")
             pixel += 500
 
+    console.log("[green]DUMP")
     for req in driver.driver.requests:
         if "api2" in str(req.url) and prefix_api in str(req.url):
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
             dump_post(json_data['list'])
-        
+
+    console.log("[red]DOWNLOAd")
     download_api_media(name, prefix_api.replace("?", ""))
     driver.close()
 
 def donwload_stories(url, name, prefix_api = "stories"):
-    driver = Driver()
-    driver.create(False)
-    driver.get_page(url, sleep=10)
 
+    console.log("[red]GET DRIVER")
+    driver = Driver()
+    driver.create(headless = False)
+    driver.get_page(url, sleep=10)
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
+            console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
             get_info_profile_scrape(json_data)
@@ -55,25 +63,29 @@ def donwload_stories(url, name, prefix_api = "stories"):
     json_data = ""
     for req in driver.driver.requests:
         if "api2" in str(req.url) and prefix_api in str(req.url) and "highlights" not in str(req.url):
+            console.log("[blue]GET API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
 
     if(json_data != ""):
-        print(json_data)
+        console.log("[green]DUMP")
         dump_post(json_data)
     else:
         print("Cant find any stories")
 
+    console.log("[red]DOWNLOAd")
     download_api_media(name, prefix_api.replace("?", ""))
     driver.close()
 
 def download_archive(url, name, prefix_api = "archived"):
 
+    console.log("[red]GET DRIVER")
     driver = Driver()
     driver.create(False)
     driver.get_page(url, sleep=10)
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
+            console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
             get_info_profile_scrape(json_data)
@@ -81,24 +93,29 @@ def download_archive(url, name, prefix_api = "archived"):
     json_data = ""
     for req in driver.driver.requests:
         if prefix_api in str(req.url):
+            console.log("[blue]GET API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
 
     if(json_data != ""):
-        print(json_data)
+        console.log("[green]DUMP")
         dump_post(json_data['list'])
     else:
         print("Cant find any archived file")
+
+    console.log("[red]DOWNLOAd")
     download_api_media(name, prefix_api.replace("?", ""))
     driver.close()
 
 def download_streams(url, name, prefix_api = "streams"):
 
+    console.log("[red]GET DRIVER")
     driver = Driver()
     driver.create(False)
     driver.get_page(url, sleep=10)
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
+            console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
             get_info_profile_scrape(json_data)
@@ -106,24 +123,30 @@ def download_streams(url, name, prefix_api = "streams"):
     json_data = ""
     for req in driver.driver.requests:
         if prefix_api in str(req.url):
+            console.log("[blue]GET API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
 
     if(json_data != ""):
-        print(json_data)
+        console.log("[green]DUMP")
         dump_post(json_data['list'])
     else:
         print("Cant find any streams")
+
+    console.log("[red]DOWNLOAd")
     download_api_media(name, prefix_api.replace("?", ""))
     driver.close()
 
 def download_buttons(url, name, prefix_api = "social/buttons"):
 
+    console.log("[red]GET DRIVER")
     driver = Driver()
     driver.create(False)
     driver.get_page(url, sleep=10)
+
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
+            console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
             get_info_profile_scrape(json_data)
@@ -131,14 +154,19 @@ def download_buttons(url, name, prefix_api = "social/buttons"):
     json_data = ""
     for req in driver.driver.requests:
         if prefix_api in str(req.url):
+            console.log("[blue]GET API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
+
+            console.log("[red]DOWNLOAd")
             for i in range(len(json_data)):
-                print(f" - Find ({json_data[i]['label']}) = {json_data[i]['url']}")
+                console.log(f"Find ({json_data[i]['label']}) = {json_data[i]['url']}")
 
     driver.close()
 
 def download_chat(id_chat):
+
+    console.log("[red]GET DRIVER")
     driver = Driver()
     driver.create(headless=False)
     driver.get_page(f"https://onlyfans.com/my/chats/chat/{id_chat}/", sleep=10)
@@ -150,14 +178,18 @@ def download_chat(id_chat):
 
     for req in driver.driver.requests:
         if "v2/chats/" in str(req.url):
+            console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
+
+            console.log("[green]DUMP")
             if req.url == f"https://onlyfans.com/api2/v2/chats/{id_chat}?skip_users=all":
                 dump_media_chat(json_data['lastMessage']['media'])
             else:
                 for msg in json_data['list']:
                     dump_media_chat(msg['media'])
 
+    console.log("[red]DOWNLOAd")
     download_api_media(user="chat", folder_name=id_chat)
     driver.close()
 
@@ -181,7 +213,7 @@ class Only:
             return f"https://onlyfans.com/{self.username}"
 
     def get_all_post(self):
-        console.log("=> GET ALL POST")
+        console.log("=> [yellow]GET ALL POST")
         download(
             url = self.get_url(), 
             name = self.username, 
@@ -190,7 +222,7 @@ class Only:
         )
 
     def get_all_media(self):
-        console.log("=> GET ALL MEDIA")
+        console.log("=> [yellow]GET ALL MEDIA")
         download(
             url = self.get_url() + "/media", 
             name = self.username, 
@@ -199,7 +231,7 @@ class Only:
         )
 
     def get_last_post(self):
-        console.log("=> GET LAST POST")
+        console.log("=> [yellow]GET LAST POST")
         download(
             url = self.get_url(), 
             name = self.username, 
@@ -208,7 +240,7 @@ class Only:
         )
 
     def get_last_media(self):
-        console.log("=> GET LAST MEDIA")
+        console.log("=> [yellow]GET LAST MEDIA")
         download(
             url = self.get_url() + "/media", 
             name = self.username, 
@@ -217,35 +249,35 @@ class Only:
         )
 
     def get_stories(self):
-        console.log("=> GET STORIES")
+        console.log("=> [yellow]GET STORIES")
         donwload_stories(
             url = self.get_url(), 
             name = self.username
         )
 
     def get_archived(self):
-        console.log("=> GET ARCHIVIED")
+        console.log("=> [yellow]GET ARCHIVIED")
         download_archive(
             url = self.get_url() + "/archived", 
             name = self.username
         )
 
     def get_streams(self):
-        console.log("=> GET STREAMS")
+        console.log("=> [yellow]GET STREAMS")
         download_streams(
             url = self.get_url() + "/streams", 
             name = self.username
         )
 
     def get_buttons(self):
-        console.log("=> GET BUTTON")
+        console.log("=> [yellow]GET BUTTON")
         download_buttons(
             url = self.get_url() + "/button", 
             name = self.username
         )
 
     def get_chat(self, id_chat):
-        console.log("=> GET CHAT")
+        console.log("=> [yellow]GET CHAT")
         download_chat(
             id_chat=id_chat
         )
