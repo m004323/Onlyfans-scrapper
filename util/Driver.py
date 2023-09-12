@@ -18,8 +18,12 @@ class Driver:
     def __init__(self) -> None:
         self.service = Service(ChromeDriverManager().install())
         self.options = webdriver.ChromeOptions()
-        os.system("kill -9 chrome.exe") # FIX FOR LINUX USER KILL ALL CHROME
-        os.system("clear") # CLS CONSOLE FIX FOR LINUX USER
+        if platform == "linux" or platform == "linux2":
+            try: subprocess.check_output("kill -9 chrome.exe",  shell=True) 
+            except: pass
+        elif platform == "win32":
+            try: subprocess.check_output("TASKKILL /IM chrome.exe /F",  shell=True) 
+            except: pass
 
     def create(self, headless = False):
         if(headless):
