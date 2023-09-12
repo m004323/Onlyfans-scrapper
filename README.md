@@ -1,4 +1,3 @@
-
 # Onlyfans downloader
 
 Script to download media and posts from creators on OnlyFans.
@@ -13,7 +12,6 @@ Script to download media and posts from creators on OnlyFans.
     </li>
 <h3>
 
-
 ## Installation
 
 Install requirement
@@ -21,26 +19,37 @@ Install requirement
 ```bash
     pip install -r requirement.txt
 ```
-    
+
 ## Run Locally
 
 Clone the project
+
 ```bash
   python Run.py
 ```
 
-
 ## Usage/Examples
 
 ```python
+    [START]
     from Only import Only
     on = Only("creator_name")
     # Only of first launch -> on.make_login()
-    on.get_last_media()
-```
 
+    [OTHER FUNC]
+    on.get_all_post()
+    on.get_last_post()
+  
+    on.get_all_media()
+    on.get_last_media()
+
+    on.get_stories()
+    on.get_archived()
+    on.get_streams()
+    on.get_buttons()
+
+```
 
 ## Authors
 
 - [@Ghost6446](https://www.github.com/Ghost6446)
-
