@@ -32,7 +32,7 @@ Clone the project
 
 ```python
     [START]
-    from Only import Only
+    from Only.only import Main
     on = Only("creator_name")
     # Only of first launch -> on.make_login()
 
