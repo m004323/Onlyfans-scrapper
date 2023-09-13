@@ -184,6 +184,24 @@ def download_highlights(url, name, prefix_api = "stories/highlights"):
 
     driver.close()
 
+def download_info_first_sub(url, prefix_api = "subscriptions/subscribe"):
+
+    driver.get_page(url, sleep=sleep_load_page)
+    find_api_me()
+
+    # Custom "find_api_by_prefix"
+    json_data = find_api_by_prefix(name_api=prefix_api)[0]['data']
+
+    if len(json_data['list']) > 0:
+        for sub in json_data['list']:
+
+
+            obj = {'name': sub['name'], 'username': sub['username'], 'avatar': sub['avatar']}
+            console.log(f"[blue]Info [green]sub [{json_data['list'].index(sub)}] [white]=> [cyan]{obj}")
+            time.sleep(0.5)
+    else:
+        console.log("[red]ERROR\INFO [yellow]no data for this profile")
+
 def download_chat(id_chat):
 
     driver.get_page(f"https://onlyfans.com/my/chats/chat/{id_chat}/", sleep=sleep_load_page)
@@ -208,6 +226,7 @@ def download_chat(id_chat):
     donwload_medias(user="chat", folder_name=id_chat)
 
     driver.close()
+
 
 
 # [ request ]
@@ -331,4 +350,9 @@ class Main:
         click_subscribe(
             url = self.get_url(),
             name = self.username
+        )
+
+    def get_list_first_subscribe(self):
+        download_info_first_sub(
+            url = "https://onlyfans.com/my/collections/user-lists/subscriptions/active"
         )
