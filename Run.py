@@ -1,4 +1,4 @@
-from Only import Only
+from Only.only import Main
 
-on = Only("creator_name")
+on = Main("creator_name")
 on.get_social_buttons()
