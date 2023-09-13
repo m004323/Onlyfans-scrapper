@@ -80,11 +80,9 @@ def download(url, name, prefix_api, scroll_all_page):
     # Try find api match with "prefix_api" and dump all data
     for succ_req in find_api_by_prefix(name_api=prefix_api):
         dump_post(radice = succ_req['data']['list'])
-
-    # Download media find
+        
     donwload_medias(name, prefix_api.replace("?", ""))
 
-    # End
     driver.close()
 
 def donwload_stories(url, name, prefix_api = "stories"):
@@ -149,7 +147,8 @@ def download_social_buttons(url, name, prefix_api = "social/buttons"):
 
     # Custom "find_api_by_prefix"
     json_data = find_api_by_prefix(name_api=prefix_api)[0]['data']
-    
+
+    # Get url and name of the button 
     if str(json_data) != "[]":
         for i in range(len(json_data)):
             console.log(f"[blue]Find [white]([yellow]{json_data[i]['label']}[white]) = [red]{json_data[i]['url']}")
