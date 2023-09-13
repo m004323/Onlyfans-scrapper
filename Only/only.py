@@ -48,13 +48,18 @@ def find_api_by_prefix(name_api, show_url=False):
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name_api) in str(req.url):
 
-            if(show_url): console.log(f"[blue]FIND API [white]=> [green]{req.url}")
-            response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
+            if(show_url): 
+                console.log(f"[blue]FIND API [white]=> [green]{req.url}")
 
-            arr_json_data.append({
-                'url': req.url,
-                'data': json.loads(response_body)
-            })
+            try:
+                response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
+
+                arr_json_data.append({
+                    'url': req.url,
+                    'data': json.loads(response_body)
+                })
+            except:
+                console.log("[red]ERROR [white]=> [yellow]No body in api")
 
     if len(arr_json_data) > 0:
         return arr_json_data
@@ -303,7 +308,7 @@ class Main:
         )
 
     def get_social_buttons(self):
-        console.log("[yellow]GET BUTTON")
+        console.log("[yellow]GET SOCIAL")
         download_social_buttons(
             url = self.get_url(), 
             name = self.username
