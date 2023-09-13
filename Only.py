@@ -12,7 +12,7 @@ from rich.console import Console
 # Variable
 console = Console()
 
-
+# [ func]
 def download(url, name, prefix_api, scroll_all_page):
 
     # Init driver
@@ -23,9 +23,11 @@ def download(url, name, prefix_api, scroll_all_page):
 
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
+
             console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
+
             get_info_profile_scrape(json_data)
 
     console.log("[green]SCROOL TO THE END")
@@ -40,6 +42,7 @@ def download(url, name, prefix_api, scroll_all_page):
     console.log("[green]DUMP")
     for req in driver.driver.requests:
         if "api2" in str(req.url) and prefix_api in str(req.url):
+
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
             dump_post(json_data['list'])
@@ -58,6 +61,7 @@ def donwload_stories(url, name, prefix_api = "stories"):
 
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
+
             console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
@@ -66,6 +70,7 @@ def donwload_stories(url, name, prefix_api = "stories"):
     json_data = ""
     for req in driver.driver.requests:
         if "api2" in str(req.url) and prefix_api in str(req.url) and "highlights" not in str(req.url):
+
             console.log("[blue]GET API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
@@ -90,6 +95,7 @@ def download_archive(url, name, prefix_api = "archived"):
 
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
+
             console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
@@ -98,6 +104,7 @@ def download_archive(url, name, prefix_api = "archived"):
     json_data = ""
     for req in driver.driver.requests:
         if prefix_api in str(req.url):
+
             console.log("[blue]GET API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
@@ -122,6 +129,7 @@ def download_streams(url, name, prefix_api = "streams"):
 
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
+
             console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
@@ -130,6 +138,7 @@ def download_streams(url, name, prefix_api = "streams"):
     json_data = ""
     for req in driver.driver.requests:
         if prefix_api in str(req.url):
+
             console.log("[blue]GET API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
@@ -154,6 +163,7 @@ def download_buttons(url, name, prefix_api = "social/buttons"):
 
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
+
             console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
@@ -162,6 +172,7 @@ def download_buttons(url, name, prefix_api = "social/buttons"):
     json_data = ""
     for req in driver.driver.requests:
         if prefix_api in str(req.url):
+
             console.log("[blue]GET API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
@@ -187,6 +198,7 @@ def download_chat(id_chat):
 
     for req in driver.driver.requests:
         if "v2/chats/" in str(req.url):
+
             console.log("[blue]FIND API")
             response_body = decode(req.response.body, req.response.headers.get('Content-Encoding', 'identity'))
             json_data = json.loads(response_body)
@@ -204,14 +216,11 @@ def download_chat(id_chat):
 
 class Only:
 
-    # Variable
     username = ""
 
-    # Costructor
     def __init__(self, username) -> None:
         self.username = username
 
-    # [ function ]
     def make_login(self):
         driver = Driver()
         driver.create(False)

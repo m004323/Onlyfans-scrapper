@@ -16,23 +16,34 @@ class Driver:
     driver = None
 
     def __init__(self) -> None:
+
         self.service = Service(ChromeDriverManager().install())
+
         self.options = webdriver.ChromeOptions()
+
+        # For linux
         if platform == "linux" or platform == "linux2":
             try: subprocess.check_output("kill -9 chrome.exe",  shell=True, creationflags=0x08000000) 
             except: pass
+
+        # For win
         elif platform == "win32":
             try: subprocess.check_output("TASKKILL /IM chrome.exe /F",  shell=True, creationflags= 0x08000000) 
             except: pass
 
 
     def create(self, headless = False):
-        if(headless): self.options.add_argument("headless")
+
+        if(headless): 
+            self.options.add_argument("headless")
+
         self.options.add_argument("--window-size=1280,1280")
         self.options.add_argument('--user-data-dir=C:/Users/'+os.getlogin()+'/AppData/Local/Google/Chrome/User Data')
+
         self.options.add_experimental_option("useAutomationExtension", True)
         self.options.add_experimental_option("excludeSwitches",["enable-automation"])
         self.options.add_experimental_option('excludeSwitches', ['enable-logging'])
+
         self.options.add_argument('--ignore-ssl-errors=yes')
         self.options.add_argument('--ignore-certificate-errors')
         self.options.add_argument('--allow-insecure-localhost')
@@ -45,11 +56,12 @@ class Driver:
         page_state = self.driver.execute_script('return document.readyState;')
         return page_state == 'complete'
 
-    def get_page(self, url, sleep=1, show_url=True):
-        start_time = time.time()
+    def get_page(self, url, sleep=1):
         self.driver.get(url)
         time.sleep(sleep)
-        while(self.page_has_loaded() == False): time.sleep(sleep)
+
+        while self.page_has_loaded() == False: 
+            time.sleep(sleep)
 
     def get_soup(self):
         return BeautifulSoup(self.driver.page_source, "lxml")
