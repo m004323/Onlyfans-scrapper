@@ -15,6 +15,7 @@ console = Console()
 
 def download(url, name, prefix_api, scroll_all_page):
 
+    # Init driver
     console.log("[red]GET DRIVER")
     driver = Driver()
     driver.create(headless = False)
@@ -49,10 +50,12 @@ def download(url, name, prefix_api, scroll_all_page):
 
 def donwload_stories(url, name, prefix_api = "stories"):
 
+    # Init driver
     console.log("[red]GET DRIVER")
     driver = Driver()
     driver.create(headless = False)
     driver.get_page(url, sleep=10)
+
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
             console.log("[blue]FIND API")
@@ -79,10 +82,12 @@ def donwload_stories(url, name, prefix_api = "stories"):
 
 def download_archive(url, name, prefix_api = "archived"):
 
+    # Init driver
     console.log("[red]GET DRIVER")
     driver = Driver()
     driver.create(False)
     driver.get_page(url, sleep=10)
+
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
             console.log("[blue]FIND API")
@@ -109,10 +114,12 @@ def download_archive(url, name, prefix_api = "archived"):
 
 def download_streams(url, name, prefix_api = "streams"):
 
+    # Init driver
     console.log("[red]GET DRIVER")
     driver = Driver()
     driver.create(False)
     driver.get_page(url, sleep=10)
+
     for req in driver.driver.requests:
         if "api2" in str(req.url) and str(name) in str(req.url):
             console.log("[blue]FIND API")
@@ -139,6 +146,7 @@ def download_streams(url, name, prefix_api = "streams"):
 
 def download_buttons(url, name, prefix_api = "social/buttons"):
 
+    # Init driver
     console.log("[red]GET DRIVER")
     driver = Driver()
     driver.create(False)
@@ -166,6 +174,7 @@ def download_buttons(url, name, prefix_api = "social/buttons"):
 
 def download_chat(id_chat):
 
+    # Init driver
     console.log("[red]GET DRIVER")
     driver = Driver()
     driver.create(headless=False)
