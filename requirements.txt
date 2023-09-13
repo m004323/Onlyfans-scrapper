@@ -1,6 +1,6 @@
 selenium
 selenium-wire
-webdriver_manager
+webdriver-manager
 bs4
 requests
 futures

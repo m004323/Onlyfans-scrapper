@@ -1,7 +1,7 @@
 # 9.08.2023 -> 12.09-2023
 
 # Import
-import json, requests, time, os, sys, json
+import requests, time, os
 from rich.console import Console
 from concurrent.futures import ThreadPoolExecutor
 
