@@ -34,19 +34,22 @@ def main_update():
     down_name = json['assets'][0]['name']
     down_url = json['assets'][0]['browser_download_url']
 
+    # Get percentaul star
     if down_count > 0 and stargazers_count > 0:
         percentual_stars = round(stargazers_count / down_count * 100, 2)
     else:
         percentual_stars = 0
 
+    # Check if latest version
     if get_install_version() != last_version:
-
+        
         os.makedirs("temp", exist_ok=True)
         console.log(f"[green]Need to update to [white]=> [red]{last_version}")
 
         down_msg_obj = {'name': down_name, 'n_download': down_count, 'msg': version_note}
         console.log(f"Last version {down_msg_obj}")
 
+        # Save latest zip file
         r = requests.get(down_url)
         open(f"temp/{down_name}", "wb").write(r.content)
 
@@ -54,6 +57,7 @@ def main_update():
         with zipfile.ZipFile(f"temp/{down_name}", "a") as zip:
             zip.extractall("")
 
+        # Copy tree
         os.rename("Onlyfans-scrapper-main", "Onlyfans-scrapper")
         copyTree(src=os.path.join(base, down_name.split(".")[0].replace("-main", "")) + "\\", dst=base + "\\")
 

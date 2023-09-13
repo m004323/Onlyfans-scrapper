@@ -1,4 +1,4 @@
 from Only.only import Main
 
-on = Main("creator_name")
-on.get_social_buttons()
+on = Main("alexaplayonlyfans")
+on.click_on_subscrive()

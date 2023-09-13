@@ -8,15 +8,18 @@ from Only.update import main_update
 # General import
 import time, json, sys
 from seleniumwire.utils import decode
+from selenium.webdriver.common.by import By
 from rich.console import Console
 
 # Variable
 console = Console()
+sleep_load_page = 12
 
 # Init
 console.log("[blue]Get driver")
 driver = Driver()
 driver.create(headless = False)
+driver.get_page("https://www.google.com/")
 
 
 # [ func ]
@@ -60,14 +63,13 @@ def find_api_by_prefix(name_api, show_url=False):
         sys.exit(0)
 
 def find_api_me():
-
     json_data = find_api_by_prefix(name_api="users/me")[0]['data']
     get_creator(radice=json_data, msg="me")
 
 
 def download(url, name, prefix_api, scroll_all_page):
     
-    driver.get_page(url, sleep=10)
+    driver.get_page(url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -90,7 +92,7 @@ def download(url, name, prefix_api, scroll_all_page):
 
 def donwload_stories(url, name, prefix_api = "stories"):
 
-    driver.get_page(url, sleep=10)
+    driver.get_page(url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -116,7 +118,7 @@ def donwload_stories(url, name, prefix_api = "stories"):
 
 def download_archive(url, name, prefix_api = "archived"):
 
-    driver.get_page(url, sleep=10)
+    driver.get_page(url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -130,7 +132,7 @@ def download_archive(url, name, prefix_api = "archived"):
 
 def download_streams(url, name, prefix_api = "streams"):
 
-    driver.get_page(url, sleep=10)
+    driver.get_page(url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -144,7 +146,7 @@ def download_streams(url, name, prefix_api = "streams"):
 
 def download_social_buttons(url, name, prefix_api = "social/buttons"):
 
-    driver.get_page(url, sleep=10)
+    driver.get_page(url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -159,9 +161,27 @@ def download_social_buttons(url, name, prefix_api = "social/buttons"):
 
     driver.close()
 
+def download_highlights(url, name, prefix_api = "stories/highlights"):
+
+    driver.get_page(url, sleep=sleep_load_page)
+    find_api_me()
+    find_api_creator(creator_name=name)
+
+    # Custom "find_api_by_prefix"
+    json_data = find_api_by_prefix(name_api=prefix_api)[0]['data']
+
+    # Check is not empty
+    if len(json_data['list']) > 0:
+        for high in json_data['list']:
+            console.log(f"[blue]Find [white]([yellow]{high['title']}[white]) = [red]{high['cover']}")
+    else:
+        console.log("[red]ERROR\INFO [yellow]no data for this profile")
+
+    driver.close()
+
 def download_chat(id_chat):
 
-    driver.get_page(f"https://onlyfans.com/my/chats/chat/{id_chat}/", sleep=10)
+    driver.get_page(f"https://onlyfans.com/my/chats/chat/{id_chat}/", sleep=sleep_load_page)
 
     console.log("SCROLL TO THE TOP !! ")
     time.sleep(3)
@@ -181,6 +201,28 @@ def download_chat(id_chat):
                 dump_chat(msg['media'])
 
     donwload_medias(user="chat", folder_name=id_chat)
+
+    driver.close()
+
+
+# [ request ]
+def click_subscribe(url, name):
+    
+    driver.get_page(url, sleep=sleep_load_page)
+    find_api_me()
+    find_api_creator(creator_name=name)
+
+    # Get last element
+    element_sub = driver.driver.find_elements(By.CLASS_NAME, "b-wrap-btn-text")[1]
+
+    try:
+        console.log("[blue]Click on button")
+        element_sub.click()
+
+        time.sleep(10)
+        console.log("[yellow]Done")
+    except:
+        pass
 
     driver.close()
 
@@ -267,8 +309,21 @@ class Main:
             name = self.username
         )
 
+    def get_highlight(self):
+        console.log("[yellow]GET HIGHLIGHT")
+        download_highlights(
+            url = self.get_url(),
+            name = self.username
+        )
+
     def get_chat(self, id_chat):
         console.log("[yellow]GET CHAT")
         download_chat(
             id_chat=id_chat
+        )
+
+    def click_on_subscrive(self):
+        click_subscribe(
+            url = self.get_url(),
+            name = self.username
         )

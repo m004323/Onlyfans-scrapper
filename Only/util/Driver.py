@@ -1,7 +1,7 @@
 # 5.07.2023 -> 12.09.2023
 
 # General import
-import os, time, subprocess
+import os, time, subprocess, sys
 from sys import platform
 from bs4 import BeautifulSoup
 
@@ -65,11 +65,15 @@ class Driver:
         return page_state == 'complete'
 
     def get_page(self, url, sleep=1):
-        self.driver.get(url)
-        time.sleep(sleep)
-
-        while self.page_has_loaded() == False: 
+        try:
+            self.driver.get(url)
             time.sleep(sleep)
+
+            while self.page_has_loaded() == False: 
+                time.sleep(sleep)
+        except:
+            console.log("[red]Cant get the page")
+            sys.exit(0)
 
     def get_soup(self):
         return BeautifulSoup(self.driver.page_source, "lxml")
