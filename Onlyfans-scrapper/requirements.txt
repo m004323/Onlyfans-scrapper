@@ -1,7 +1,0 @@
-selenium
-selenium-wire
-webdriver_manager
-bs4
-requests
-futures
-rich
