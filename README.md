@@ -17,7 +17,7 @@ Script to download media and posts from creators on OnlyFans.
 Install requirement
 
 ```bash
-    pip install -r requirement.txt
+    pip install -r requirements.txt
 ```
 
 ## Run Locally
@@ -46,7 +46,7 @@ Clone the project
     on.get_stories()
     on.get_archived()
     on.get_streams()
-    on.get_buttons()
+    on.get_social_buttons()
 
 ```
 
