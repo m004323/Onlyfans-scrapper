@@ -46,7 +46,7 @@ Clone the project
     on.get_stories()
     on.get_archived()
     on.get_streams()
-    on.get_buttons()
+    on.get_social_buttons()
 
 ```
 
