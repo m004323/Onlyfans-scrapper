@@ -4,10 +4,15 @@
 import os, time, subprocess
 from sys import platform
 from bs4 import BeautifulSoup
+
 from seleniumwire import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
+
+from rich.console import Console
+
+# Variable
+console = Console()
 
 class Driver:
 
@@ -22,6 +27,7 @@ class Driver:
         self.options = webdriver.ChromeOptions()
 
         # For linux
+        console.log("[green]Close all instance of chrome")
         if platform == "linux" or platform == "linux2":
             try: subprocess.check_output("kill -9 chrome.exe",  shell=True, creationflags=0x08000000) 
             except: pass
@@ -30,9 +36,8 @@ class Driver:
         elif platform == "win32":
             try: subprocess.check_output("TASKKILL /IM chrome.exe /F",  shell=True, creationflags= 0x08000000) 
             except: pass
-
-
-    def create(self, headless = False):
+            
+    def create(self, headless=False, minimize=False):
 
         if(headless): 
             self.options.add_argument("headless")
@@ -51,6 +56,9 @@ class Driver:
         self.options.add_argument("--disable-notifications")
 
         self.driver = webdriver.Chrome(options=self.options,  service=self.service)
+    
+        if(minimize):
+            self.driver.minimize_window()
 
     def page_has_loaded(self):
         page_state = self.driver.execute_script('return document.readyState;')
@@ -66,7 +74,35 @@ class Driver:
     def get_soup(self):
         return BeautifulSoup(self.driver.page_source, "lxml")
 
+    def scroll_to_end(self, sleep_load = 1, max_scroll=999):
+        scroll_count = 0
+        last_height = self.driver.execute_script("return document.body.scrollHeight")
+
+        while True:
+
+            console.log(f"[blue]Scroll [red][{scroll_count}]")
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight + 500);")
+            scroll_count+=1
+
+            time.sleep(sleep_load)
+            new_height = self.driver.execute_script("return document.body.scrollHeight")
+
+            if new_height == last_height:
+                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight + 500);")
+                time.sleep(sleep_load)
+                break
+
+            if scroll_count == max_scroll:
+                break
+
+            last_height = new_height
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight + 500);")
+            time.sleep(sleep_load)
+
+        console.log("[green]End reach")
+    
     def close(self): 
-        print("Close driver")
+        console.log("[red]Close driver")
+
         self.driver.close()
         self.driver.quit()
