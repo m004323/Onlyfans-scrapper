@@ -68,7 +68,4 @@ def main_update():
     console.log(f"[red]Only was downloaded [yellow]{down_count} [red]times, but only [yellow]{percentual_stars} [red]of You(!) have starred it. \n\
         [cyan]Help the repository grow today, by leaving a [yellow]star [cyan]on it and sharing it to others online!")
     time.sleep(10)
-<<<<<<< HEAD
     print("\n")
-=======
->>>>>>> 85804f7cea07cdff4f2c36fb8885d1d528035d30
