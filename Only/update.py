@@ -29,15 +29,20 @@ def main_update():
     last_version = json['name']
     version_note = json['body']
 
+    # Info download
+    down_count = json['assets'][0]['download_count']
+    down_name = json['assets'][0]['name']
+    down_url = json['assets'][0]['browser_download_url']
+
+    if down_count > 0 and stargazers_count > 0:
+        percentual_stars = round(stargazers_count / down_count * 100, 2)
+    else:
+        percentual_stars = 0
+
     if get_install_version() != last_version:
 
         os.makedirs("temp", exist_ok=True)
         console.log(f"[green]Need to update to [white]=> [red]{last_version}")
-        
-        down_count = json['assets'][0]['download_count']
-        down_name = json['assets'][0]['name']
-        down_url = json['assets'][0]['browser_download_url']
-        percentual_stars = round(stargazers_count / down_count * 100, 2)
 
         down_msg_obj = {'name': down_name, 'n_download': down_count, 'msg': version_note}
         console.log(f"Last version {down_msg_obj}")
@@ -63,3 +68,4 @@ def main_update():
     console.log(f"[red]Only was downloaded [yellow]{down_count} [red]times, but only [yellow]{percentual_stars} [red]of You(!) have starred it. \n\
         [cyan]Help the repository grow today, by leaving a [yellow]star [cyan]on it and sharing it to others online!")
     time.sleep(10)
+    print("\n")
