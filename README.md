@@ -46,7 +46,10 @@ Clone the project
     on.get_stories()
     on.get_archived()
     on.get_streams()
-    on.get_buttons()
+
+    on.get_chat()               #NEW
+    on.get_buttons()            #NEW
+    on.click_on_subscrive()     #NEW
 
 ```
 
