@@ -347,12 +347,14 @@ class Main:
         )
 
     def click_on_subscrive(self):
+        console.log("[yellow]CLICK  SUBSCRIBE")
         click_subscribe(
             url = self.get_url(),
             name = self.username
         )
 
     def get_list_first_subscribe(self):
+        console.log("[yellow]GET FIRST 10 SUB")
         download_info_first_sub(
             url = "https://onlyfans.com/my/collections/user-lists/subscriptions/active"
         )

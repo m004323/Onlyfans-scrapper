@@ -78,7 +78,7 @@ class Driver:
     def get_soup(self):
         return BeautifulSoup(self.driver.page_source, "lxml")
 
-    def scroll_to_end(self, sleep_load = 1, max_scroll=999):
+    def scroll_to_end(self, sleep_load = 2, max_scroll=999):
         scroll_count = 0
         last_height = self.driver.execute_script("return document.body.scrollHeight")
 
