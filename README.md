@@ -1,6 +1,6 @@
 # Onlyfans downloader
 
-Script to download media and posts from creators on OnlyFans.
+Script to download media and posts from creators on OnlyFans (no payment media if not subscribe).
 
 <h3>DISCLAIMERS:</h3>
 <ul>
