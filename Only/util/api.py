@@ -62,28 +62,22 @@ def dump_post(radice):
 def dump_chat(radice):
 
     for media in radice:
+        if media['canView']:
 
-        url = ""    
-        try: 
-            url = media['files']['source']['url']
-        except:
-            try: 
-                url = media['source']['source']
-            except: 
-                url = None
-           
-        if media['type'] == "photo": 
-            arr_media.append({
-                'id': media['id'],
-                'url': url,
-                'is_video': False
-            })
-        else: 
-            arr_media.append({
-                'id': media['id'],
-                'url': url,
-                'is_video': True
-            })
+            print("..")
+
+            if media['type'] == "photo": 
+                arr_media.append({
+                    'id': media['id'],
+                    'url': media['src'],
+                    'is_video': False
+                })
+            else: 
+                arr_media.append({
+                    'id': media['id'],
+                    'url': media['src'],
+                    'is_video': True
+                })
 
 
 def donwload_media(media, file_name):

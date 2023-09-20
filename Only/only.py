@@ -206,13 +206,18 @@ def download_chat(id_chat):
 
     driver.get_page(f"https://onlyfans.com/my/chats/chat/{id_chat}/", sleep=sleep_load_page)
 
-    console.log("SCROLL TO THE TOP !! ")
-    time.sleep(3)
-    console.log("IF TOP OF THE PAGE, PRESS ANY KEY")
-    msg = input("")
+    console.log("[blue]SCROLL TO THE TOP !! ")
+    time.sleep(1.5)
+    console.log("[blue]IF TOP OF THE PAGE, PRESS ANY KEY")
+    input("")
+
+    #with open("sample.json", "w") as outfile:
+    #    json.dump(find_api_by_prefix(name_api="chats"), outfile)
 
     # For all valid req in api xxx
     for req in find_api_by_prefix(name_api="chats"):
+
+        print("GET => ", req['url'])
 
         # For only first one
         if req['url'] == f"https://onlyfans.com/api2/v2/chats/{id_chat}?skip_users=all":
@@ -220,13 +225,15 @@ def download_chat(id_chat):
 
         # all other
         else:
-            for msg in req['data']['list']:
-                dump_chat(msg['media'])
+            for media in req['data']['list']:
+                try:
+                    dump_chat(media['media'])
+                except:
+                    pass
 
-    donwload_medias(user="chat", folder_name=id_chat)
 
+    donwload_medias(folder_name=id_chat, sub_folder="chat")
     driver.close()
-
 
 
 # [ request ]
