@@ -37,7 +37,7 @@ def find_api_creator(creator_name):
     if json_data != "":
         get_creator(radice=json_data, msg="creator")
     else:
-        console.log("[red]ERROR [yellow](find_api_creator)")
+        console.log(f"[red]ERROR [yellow]find_api_creator by name: [green]{creator_name}")
         #sys.exit(0)
 
 def find_api_by_prefix(name_api, show_url=False):
@@ -64,7 +64,7 @@ def find_api_by_prefix(name_api, show_url=False):
     if len(arr_json_data) > 0:
         return arr_json_data
     else:
-        console.log("[red]ERROR [yellow](find_api_creator)")
+        console.log(f"[red]ERROR [yellow]find_api_creator by prefix: [green]{name_api}")
         sys.exit(0)
 
 def find_api_me():
