@@ -3,7 +3,7 @@
 """
 
 __title__ = 'Onlyfans-scraper'
-__version__ = 'v0.7'
+__version__ = 'v0.7.1'
 __author__ = 'Ghost6446'
 __author_email__ = ''
 __description__ = 'A command-line program to download media, posts, and more from OnlyFans'
