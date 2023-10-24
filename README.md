@@ -51,6 +51,9 @@ Clone the project
     on.get_buttons()            #NEW
     on.click_on_subscrive()     #NEW
 
+    on.get_profile_photo()     #NEW
+    on.get_avatar_photo()      #NEW
+
 ```
 
 ## ERROR [NO MEDIA]
