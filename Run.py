@@ -1,4 +1,4 @@
 from Only.only import Main
 
 on = Main("")
-on.get_all_media()
+on.get_avatar_photo()

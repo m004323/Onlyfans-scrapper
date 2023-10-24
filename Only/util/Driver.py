@@ -72,7 +72,7 @@ class Driver:
             while self.page_has_loaded() == False: 
                 time.sleep(sleep)
         except:
-            console.log("[red]Cant get the page")
+            console.log(f"[red]Cant get url: [green]{url}")
             sys.exit(0)
 
     def get_soup(self):

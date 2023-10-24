@@ -1,19 +1,23 @@
-# 9.08.2023 -> 12.09.2023
+# 9.08.2023 -> 12.09.2023 -> 24.10.2023
 
 # Class import
 from Only.util.Driver import Driver
 from Only.util.api import get_creator, dump_post, donwload_medias, dump_chat
+from Only.util.dw_image import donwload_image
 from Only.update import main_update
 
+
 # General import
-import time, json, sys
+import time, json, sys, os
 from seleniumwire.utils import decode
 from selenium.webdriver.common.by import By
 from rich.console import Console
 
+
 # Variable
 console = Console()
 sleep_load_page = 12
+
 
 # Init
 console.log("[blue]Get driver")
@@ -74,7 +78,7 @@ def find_api_me():
 
 def download(url, name, prefix_api, scroll_all_page):
     
-    driver.get_page(url, sleep=sleep_load_page)
+    driver.get_page(url=url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -97,7 +101,7 @@ def download(url, name, prefix_api, scroll_all_page):
 
 def donwload_stories(url, name, prefix_api = "stories"):
 
-    driver.get_page(url, sleep=sleep_load_page)
+    driver.get_page(url=url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -123,7 +127,7 @@ def donwload_stories(url, name, prefix_api = "stories"):
 
 def download_archive(url, name, prefix_api = "archived"):
 
-    driver.get_page(url, sleep=sleep_load_page)
+    driver.get_page(url=url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -137,7 +141,7 @@ def download_archive(url, name, prefix_api = "archived"):
 
 def download_streams(url, name, prefix_api = "streams"):
 
-    driver.get_page(url, sleep=sleep_load_page)
+    driver.get_page(url=url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -151,7 +155,7 @@ def download_streams(url, name, prefix_api = "streams"):
 
 def download_social_buttons(url, name, prefix_api = "social/buttons"):
 
-    driver.get_page(url, sleep=sleep_load_page)
+    driver.get_page(url=url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -168,7 +172,7 @@ def download_social_buttons(url, name, prefix_api = "social/buttons"):
 
 def download_highlights(url, name, prefix_api = "stories/highlights"):
 
-    driver.get_page(url, sleep=sleep_load_page)
+    driver.get_page(url=url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -186,7 +190,7 @@ def download_highlights(url, name, prefix_api = "stories/highlights"):
 
 def download_info_first_sub(url, prefix_api = "subscriptions/subscribe"):
 
-    driver.get_page(url, sleep=sleep_load_page)
+    driver.get_page(url=url, sleep=sleep_load_page)
     find_api_me()
 
     # Custom "find_api_by_prefix"
@@ -236,10 +240,10 @@ def download_chat(id_chat):
     driver.close()
 
 
-# [ request ]
+# [ other func ]
 def click_subscribe(url, name):
     
-    driver.get_page(url, sleep=sleep_load_page)
+    driver.get_page(url=url, sleep=sleep_load_page)
     find_api_me()
     find_api_creator(creator_name=name)
 
@@ -257,6 +261,48 @@ def click_subscribe(url, name):
 
     driver.close()
 
+def donwload_profile_photo(url, name):
+
+    driver.get_page(url=url, sleep=sleep_load_page)
+    find_api_me()
+    find_api_creator(creator_name=name)
+
+    soup = driver.get_soup()
+    html_profile = soup.find("img", class_="b-profile__header__cover-img")
+    path_folder = os.path.join("data", name, "page_photo")
+    os.makedirs(path_folder, exist_ok=True)
+
+    if "http" in html_profile.get("src"):
+        console.log("[blue]Image profile [red]Find")
+        console.log(f"[blue]Folder path: [green]{path_folder}")
+
+    donwload_image(
+        url = html_profile.get("src"),
+        name = "profile.jpg",
+        folder = path_folder
+    )
+
+def donwload_avatar_photo(url, name):
+
+    driver.get_page(url=url, sleep=sleep_load_page)
+    find_api_me()
+    find_api_creator(creator_name=name)
+
+    soup = driver.get_soup()
+    html_profile = soup.find("div", class_="g-avatar__img-wrapper").find("img")
+    path_folder = os.path.join("data", name, "page_photo")
+    os.makedirs(path_folder, exist_ok=True)
+
+    if "http" in html_profile.get("src"):
+        console.log("[blue]Image avatar [red]Find")
+        console.log(f"[blue]Folder path: [green]{path_folder}")
+
+    donwload_image(
+        url = html_profile.get("src"),
+        name = "avatar.jpg",
+        folder = path_folder
+    )
+
 
 # [ class ]
 class Main:
@@ -265,7 +311,11 @@ class Main:
 
     def __init__(self, username) -> None:
         self.username = username
-        main_update()
+        if username == None or username == "":
+            console.log("[red]Insert username on main file")
+            sys.exit(0)
+        else:
+            main_update()
 
     def make_login(self):
         driver = Driver()
@@ -365,3 +415,19 @@ class Main:
         download_info_first_sub(
             url = "https://onlyfans.com/my/collections/user-lists/subscriptions/active"
         )
+
+    def get_profile_photo(self):
+        console.log("[yellow]DONWLOAD PROFILE PHOTO")
+        donwload_profile_photo(
+            url = self.get_url(),
+            name = self.username
+        )
+
+    def get_avatar_photo(self):
+        console.log("[yellow]DONWLOAD AVATAR PHOTO")
+        donwload_avatar_photo(
+            url = self.get_url(),
+            name = self.username
+        )
+        
+
