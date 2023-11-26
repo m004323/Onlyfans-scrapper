@@ -60,7 +60,7 @@ Clone the project
 TO FIX NOT ALL MEDIA FIND: go to util\api.py find function "scroll_to_end" and change variable "sleep_load" until he can get to the bottom of the page, after that go to only.py and change driver.create(False) to driver.create (True) to remove headless of browser to test it and see what it do.
 
 
-## Tutorial
+## Old tutorial
 https://www.youtube.com/watch?v=e6h13W3mVhA&t=48s
 
 ## Authors
